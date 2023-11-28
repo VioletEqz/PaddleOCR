@@ -34,6 +34,10 @@ class RecAug(object):
                  hsv_aug_prob=0.4,
                  **kwargs):
         self.tia_prob = tia_prob
+        # print all params
+        for k, v in locals().items():
+            if k != 'self':
+                print('{}: {}'.format(k, v))
         self.bda = BaseDataAugmentation(crop_prob, reverse_prob, noise_prob,
                                         jitter_prob, blur_prob, hsv_aug_prob)
 
@@ -152,7 +156,9 @@ class RecConAug(object):
                                        (ext_w, self.image_shape[0]))
         data['image'] = np.concatenate(
             [data['image'], ext_data['image']], axis=1)
-        data["label"] += ext_data["label"]
+        # data["label"] += ext_data["label"]
+        # Concat the two label, separated by a whitespace
+        data["label"] += " " + ext_data["label"]
         return data
 
     def __call__(self, data):

@@ -46,11 +46,12 @@ class MultiHead(nn.Layer):
     def __init__(self, in_channels, out_channels_list, **kwargs):
         super().__init__()
         self.head_list = kwargs.pop('head_list')
-
+        print(out_channels_list)
         self.gtc_head = 'sar'
         assert len(self.head_list) >= 2
         for idx, head_name in enumerate(self.head_list):
             name = list(head_name)[0]
+            print(name)
             if name == 'SARHead':
                 # sar head
                 sar_args = self.head_list[idx][name]
@@ -76,7 +77,10 @@ class MultiHead(nn.Layer):
                 # ctc neck
                 self.encoder_reshape = Im2Seq(in_channels)
                 neck_args = self.head_list[idx][name]['Neck']
+                print(neck_args)
                 encoder_type = neck_args.pop('name')
+                print(in_channels)
+                print(encoder_type)
                 self.ctc_encoder = SequenceEncoder(in_channels=in_channels, \
                     encoder_type=encoder_type, **neck_args)
                 # ctc head
@@ -97,6 +101,9 @@ class MultiHead(nn.Layer):
         # eval mode
         if not self.training:
             return ctc_out
+        
+        print(x.shape)
+        print(type(targets)) if isinstance(targets, list) else print(targets)
         if self.gtc_head == 'sar':
             sar_out = self.sar_head(x, targets[1:])
             head_out['sar'] = sar_out

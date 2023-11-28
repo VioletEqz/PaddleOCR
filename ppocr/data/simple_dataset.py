@@ -50,13 +50,25 @@ class SimpleDataSet(Dataset):
         self.data_idx_order_list = list(range(len(self.data_lines)))
         if self.mode == "train" and self.do_shuffle:
             self.shuffle_data_random()
-
         self.set_epoch_as_seed(self.seed, dataset_config)
 
         self.ops = create_operators(dataset_config['transforms'], global_config)
         self.ext_op_transform_idx = dataset_config.get("ext_op_transform_idx",
                                                        2)
         self.need_reset = True in [x < 1 for x in ratio_list]
+        # check if samples folder exists, if not, create it, else delete old folder and create a new one
+        if not os.path.exists('samples'):
+            os.mkdir('samples')
+        else:
+            os.system('rm -rf samples')
+            os.mkdir('samples')
+
+        if not os.path.exists('samples2'):
+            os.mkdir('samples2')
+        else:
+            os.system('rm -rf samples2')
+            os.mkdir('samples2')
+
 
     def set_epoch_as_seed(self, seed, dataset_config):
         if self.mode == 'train':
@@ -124,12 +136,18 @@ class SimpleDataSet(Dataset):
             label = substr[1]
             img_path = os.path.join(self.data_dir, file_name)
             data = {'img_path': img_path, 'label': label}
+            # print(label)
             if not os.path.exists(img_path):
                 continue
             with open(data['img_path'], 'rb') as f:
                 img = f.read()
                 data['image'] = img
             data = transform(data, load_data_ops)
+            # print('hehe1')
+            # print(load_data_ops)
+            # print(data['image'].shape)
+            # print('hehe2')
+            # cv2.imwrite(f'samples/{data["label"]}.jpg', data['image'])
 
             if data is None:
                 continue
@@ -156,6 +174,7 @@ class SimpleDataSet(Dataset):
                 img = f.read()
                 data['image'] = img
             data['ext_data'] = self.get_ext_data()
+            data['valid_ratio'] = 1.0
             outs = transform(data, self.ops)
         except:
             self.logger.error(
@@ -250,7 +269,12 @@ class MultiScaleDataSet(SimpleDataSet):
                 img = f.read()
                 data['image'] = img
             data['ext_data'] = self.get_ext_data()
-            outs = transform(data, self.ops[:-1])
+            outs = transform(data, self.ops[:-2])
+            print(data['image'].shape)
+            print(outs['image'].shape)
+            cv2.imwrite(f'samples2/{data["label"]}.jpg', outs['image'])
+            outs = transform(outs, self.ops[-2:-1])
+            # outs = transform(data, self.ops[:-1])
             if outs is not None:
                 outs = self.resize_norm_img(outs, img_width, img_height)
                 outs = transform(outs, self.ops[-1:])

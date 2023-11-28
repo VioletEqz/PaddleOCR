@@ -248,6 +248,7 @@ class SequenceEncoder(nn.Layer):
             else:
                 self.encoder = support_encoder_dict[encoder_type](
                     self.encoder_reshape.out_channels, hidden_size)
+                print(self.encoder_reshape.out_channels, hidden_size)
             self.out_channels = self.encoder.out_channels
             self.only_reshape = False
 
