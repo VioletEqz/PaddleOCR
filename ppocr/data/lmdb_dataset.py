@@ -137,7 +137,7 @@ class LMDBDataSet(Dataset):
         file_idx = int(file_idx)
         sample_info = self.get_lmdb_sample_info(self.lmdb_sets[lmdb_idx]['txn'],
                                                 file_idx)
-        print(self.__len__())
+        # print(self.__len__())
         if sample_info is None:
             return self.__getitem__(np.random.randint(self.__len__()))
         img, label = sample_info
