@@ -64,8 +64,13 @@ Loss:
   name: MultiLoss
   loss_config_list:
     - CTCLoss:
-      use_focal_loss: true
-      weight: 1.0
+        use_focal_loss: true
+        weight: 1.0
+    - CenterLoss:
+        weight: 0.05
+        num_classes: 230 # 227+1 (space)
+        feat_dim: 96
+        center_file_path:
     - SARLoss:
 
 PostProcess:  
@@ -78,11 +83,9 @@ Metric:
 
 Train:
   dataset:
-    name: SimpleDataSet
-    data_dir: ./train_data/
+    name: LMDBDataSet
+    data_dir: /kaggle/input/text-gen-2-vi-combined/
     ext_op_transform_idx: 1
-    label_file_list:
-    - ./train_data/train_list.txt
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -90,12 +93,19 @@ Train:
     - RecConAug:
         prob: 0.5
         ext_data_num: 2
-        image_shape: [48, 320, 3]
+        image_shape: [48, 640]
         max_text_length: *max_text_length
     - RecAug:
+        tia_prob: 0.0
+        crop_prob: 0.0
+        reverse_prob: 0.5
+        noise_prob: 0.5
+        jitter_prob: 0.5
+        blur_prob: 0.5
+        hsv_aug_prob: 0.5
     - MultiLabelEncode:
     - RecResizeImg:
-        image_shape: [3, 48, 320]
+        image_shape: [3, 48, 640]
     - KeepKeys:
         keep_keys:
         - image
@@ -105,22 +115,20 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 128
+    batch_size_per_card: 256
     drop_last: true
     num_workers: 4
 Eval:
   dataset:
-    name: SimpleDataSet
-    data_dir: ./train_data
-    label_file_list:
-    - ./train_data/val_list.txt
+    name: LMDBDataSet
+    data_dir: /kaggle/input/text-gen-2-vi-combined/
     transforms:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
     - MultiLabelEncode:
     - RecResizeImg:
-        image_shape: [3, 48, 320]
+        image_shape: [3, 48, 512]
     - KeepKeys:
         keep_keys:
         - image
