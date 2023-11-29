@@ -102,8 +102,8 @@ class MultiHead(nn.Layer):
         if not self.training:
             return ctc_out
         
-        print(x.shape)
-        print(type(targets)) if isinstance(targets, list) else print(targets)
+        # print(x.shape)
+        # print(type(targets)) if isinstance(targets, list) else print(targets)
         if self.gtc_head == 'sar':
             sar_out = self.sar_head(x, targets[1:])
             head_out['sar'] = sar_out

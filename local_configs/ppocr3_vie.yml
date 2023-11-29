@@ -6,7 +6,7 @@ Global:
   print_batch_step: 10
   save_model_dir: ./output/ppocr3
   save_epoch_step: 2
-  eval_batch_step: [0, 10]
+  eval_batch_step: [0, 200]
   cal_metric_during_train: true
   pretrained_model:
   checkpoints:
