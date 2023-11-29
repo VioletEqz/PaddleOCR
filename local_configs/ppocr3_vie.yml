@@ -1,12 +1,12 @@
 Global:
   debug: false
   use_gpu: true
-  epoch_num: 500
-  log_smooth_window: 20
+  epoch_num: 200
+  log_smooth_window: 5
   print_batch_step: 10
   save_model_dir: ./output/ppocr3
-  save_epoch_step: 3
-  eval_batch_step: [0, 2000]
+  save_epoch_step: 2
+  eval_batch_step: [0, 10]
   cal_metric_during_train: true
   pretrained_model:
   checkpoints:
@@ -27,8 +27,8 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Cosine
-    learning_rate: 0.001
-    warmup_epoch: 5
+    learning_rate: 0.0005
+    warmup_epoch: 2
   regularizer:
     name: L2
     factor: 3.0e-05
@@ -115,14 +115,14 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 128
+    batch_size_per_card: 96
     drop_last: true
     num_workers: 4
 
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /kaggle/input/text-gen-2-vi-combined-v2/
+    data_dir: /kaggle/input/name-test/
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -140,5 +140,5 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 128
+    batch_size_per_card: 96
     num_workers: 4
