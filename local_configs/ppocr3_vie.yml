@@ -90,11 +90,11 @@ Train:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
-    - RecConAug:
-        prob: 0.5
-        ext_data_num: 2
-        image_shape: [48, 640]
-        max_text_length: *max_text_length
+    # - RecConAug:
+    #     prob: 0.5
+    #     ext_data_num: 2
+    #     image_shape: [48, 640]
+    #     max_text_length: *max_text_length
     - RecAug:
         tia_prob: 0.0
         crop_prob: 0.0
@@ -115,9 +115,10 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 256
+    batch_size_per_card: 128
     drop_last: true
     num_workers: 4
+
 Eval:
   dataset:
     name: LMDBDataSet
