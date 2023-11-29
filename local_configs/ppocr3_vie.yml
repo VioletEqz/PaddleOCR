@@ -66,11 +66,11 @@ Loss:
     - CTCLoss:
         use_focal_loss: true
         weight: 1.0
-    - CenterLoss:
-        weight: 0.05
-        num_classes: 230 # 227+1 (space)
-        feat_dim: 96
-        center_file_path:
+    # - CenterLoss:
+    #     weight: 0.05
+    #     num_classes: 230 # 227+1 (space)
+    #     feat_dim: 96
+    #     center_file_path:
     - SARLoss:
 
 PostProcess:  
@@ -128,7 +128,7 @@ Eval:
         channel_first: false
     - MultiLabelEncode:
     - RecResizeImg:
-        image_shape: [3, 48, 512]
+        image_shape: [3, 48, 640]
     - KeepKeys:
         keep_keys:
         - image

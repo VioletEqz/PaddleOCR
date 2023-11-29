@@ -269,12 +269,12 @@ class MultiScaleDataSet(SimpleDataSet):
                 img = f.read()
                 data['image'] = img
             data['ext_data'] = self.get_ext_data()
-            outs = transform(data, self.ops[:-2])
-            print(data['image'].shape)
-            print(outs['image'].shape)
-            cv2.imwrite(f'samples2/{data["label"]}.jpg', outs['image'])
-            outs = transform(outs, self.ops[-2:-1])
-            # outs = transform(data, self.ops[:-1])
+            # outs = transform(data, self.ops[:-2])
+            # print(data['image'].shape)
+            # print(outs['image'].shape)
+            # cv2.imwrite(f'samples2/{data["label"]}.jpg', outs['image'])
+            # outs = transform(outs, self.ops[-2:-1])
+            outs = transform(data, self.ops[:-1])
             if outs is not None:
                 outs = self.resize_norm_img(outs, img_width, img_height)
                 outs = transform(outs, self.ops[-1:])
