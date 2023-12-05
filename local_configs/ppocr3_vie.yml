@@ -84,7 +84,7 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet
-    data_dir: /kaggle/input/text-gen-2-vi-combined-v2/
+    data_dir: /kaggle/input/text-gen-vi-combined-v3/
     ext_op_transform_idx: 1
     transforms:
     - DecodeImage:
@@ -122,7 +122,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /kaggle/input/name-test/
+    data_dir: /kaggle/input/test-set-vie-name-corrected/
     transforms:
     - DecodeImage:
         img_mode: BGR
