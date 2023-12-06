@@ -31,7 +31,7 @@ Optimizer:
     warmup_epoch: 2
   regularizer:
     name: L2
-    factor: 3.0e-05
+    factor: 1.0e-04
 
 
 Architecture:
@@ -96,11 +96,11 @@ Train:
         image_shape: [48, 512]
         max_text_length: *max_text_length
     - RecAug:
-        tia_prob: 0.05
-        crop_prob: 0.05
+        tia_prob: 0.1
+        crop_prob: 0.1
         reverse_prob: 0.5
-        noise_prob: 0.5
-        jitter_prob: 0.5
+        noise_prob: 0.6
+        jitter_prob: 0.6
         blur_prob: 0.5
         hsv_aug_prob: 0.5
     - MultiLabelEncode:
