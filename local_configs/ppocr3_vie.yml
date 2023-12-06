@@ -8,8 +8,8 @@ Global:
   save_epoch_step: 2
   eval_batch_step: [0, 200]
   cal_metric_during_train: true
-  pretrained_model:
-  checkpoints:
+  pretrained_model: "/kaggle/input/savvvv/best_accuracy (1)"
+  checkpoints: 
   save_inference_dir:
   use_visualdl: false
   infer_img: 
