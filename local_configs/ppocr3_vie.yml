@@ -27,11 +27,11 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Cosine
-    learning_rate: 0.0001
+    learning_rate: 0.00015
     warmup_epoch: 2
   regularizer:
     name: L2
-    factor: 1.0e-04
+    factor: 6.0e-05
 
 
 Architecture:
@@ -96,12 +96,12 @@ Train:
         image_shape: [48, 512]
         max_text_length: *max_text_length
     - RecAug:
-        tia_prob: 0.1
-        crop_prob: 0.1
-        reverse_prob: 0.5
+        tia_prob: 0.05
+        crop_prob: 0.05
+        reverse_prob: 0.6
         noise_prob: 0.6
         jitter_prob: 0.6
-        blur_prob: 0.5
+        blur_prob: 0.6
         hsv_aug_prob: 0.5
     - MultiLabelEncode:
     - RecResizeImg:
@@ -115,7 +115,7 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 68
+    batch_size_per_card: 72
     drop_last: true
     num_workers: 4
 
@@ -140,5 +140,5 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 68
+    batch_size_per_card: 72
     num_workers: 4
