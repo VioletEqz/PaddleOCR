@@ -27,7 +27,7 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Cosine
-    learning_rate: 0.00035
+    learning_rate: 0.0003
     warmup_epoch: 2
   regularizer:
     name: L2
@@ -40,7 +40,7 @@ Architecture:
   Transform:
   Backbone:
     name: MobileNetV1Enhance
-    scale: 0.5
+    scale: 0.6
     last_conv_stride: [1, 2]
     last_pool_type: avg
     last_pool_kernel_size: [2, 2]
@@ -115,14 +115,14 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 86
+    batch_size_per_card: 77
     drop_last: true
     num_workers: 4
 
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /kaggle/input/testset-real-vie-private/real_name_lmdb
+    data_dir: /kaggle/input/testset-real-vie-private/real_name_lmdb/
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -140,5 +140,5 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 86
+    batch_size_per_card: 77
     num_workers: 4
