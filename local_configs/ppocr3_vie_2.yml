@@ -1,0 +1,144 @@
+Global:
+  debug: false
+  use_gpu: true
+  epoch_num: 200
+  log_smooth_window: 3
+  print_batch_step: 10
+  save_model_dir: ./output/ppocr3
+  save_epoch_step: 1
+  eval_batch_step: [0, 200]
+  cal_metric_during_train: true
+  pretrained_model: 
+  checkpoints: 
+  save_inference_dir:
+  use_visualdl: false
+  infer_img: 
+  character_dict_path: dict.txt
+  max_text_length: &max_text_length 50
+  infer_mode: false
+  use_space_char: true
+  distributed: true
+  save_res_path: ./output/rec/predicts_ppocrv3_en.txt
+
+
+Optimizer:
+  name: Adam
+  beta1: 0.9
+  beta2: 0.999
+  lr:
+    name: Cosine
+    learning_rate: 0.0003
+    warmup_epoch: 2
+  regularizer:
+    name: L2
+    factor: 5.0e-05
+
+
+Architecture:
+  model_type: rec
+  algorithm: SVTR_LCNet
+  Transform:
+  Backbone:
+    name: MobileNetV1Enhance
+    scale: 0.75
+    last_conv_stride: [1, 2]
+    last_pool_type: avg
+    last_pool_kernel_size: [2, 2]
+  Head:
+    name: MultiHead
+    head_list:
+      - CTCHead:
+          Neck:
+            name: svtr
+            dims: 64
+            depth: 2
+            hidden_dims: 120
+            use_guide: True
+          Head:
+            fc_decay: 0.00001
+      - SARHead:
+          enc_dim: 512
+          max_text_length: *max_text_length
+
+Loss:
+  name: MultiLoss
+  loss_config_list:
+    - CTCLoss:
+    #   use_focal_loss: true
+        weight: 1.0
+    # - CenterLoss:
+    #     weight: 0.05
+    #     num_classes: 230 # 227+1 (space)
+    #     feat_dim: 96
+    #     center_file_path:
+    - SARLoss:
+
+PostProcess:  
+  name: CTCLabelDecode
+
+Metric:
+  name: RecMetric
+  main_indicator: acc
+  ignore_space: False
+
+Train:
+  dataset:
+    name: LMDBDataSet
+    data_dir: /kaggle/input/text-gen-vi-combined-v3/
+    ext_op_transform_idx: 1
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - RecConAug:
+        prob: 0.5
+        ext_data_num: 2
+        image_shape: [48, 480]
+        max_text_length: *max_text_length
+    - RecAug:
+        tia_prob: 0.0
+        crop_prob: 0.0
+        reverse_prob: 0.0
+        noise_prob: 0.4
+        jitter_prob: 0.4
+        blur_prob: 0.0
+        hsv_aug_prob: 0.4
+    - MultiLabelEncode:
+    - RecResizeImg:
+        image_shape: [3, 48, 480]
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label_ctc
+        - label_sar
+        - length
+        - valid_ratio
+  loader:
+    shuffle: true
+    batch_size_per_card: 72
+    drop_last: true
+    num_workers: 4
+
+Eval:
+  dataset:
+    name: LMDBDataSet
+    data_dir: /kaggle/input/test-set-vie-name-corrected/
+    transforms:
+    - DecodeImage:
+        img_mode: BGR
+        channel_first: false
+    - MultiLabelEncode:
+    - RecResizeImg:
+        image_shape: [3, 48, 480]
+    - KeepKeys:
+        keep_keys:
+        - image
+        - label_ctc
+        - label_sar
+        - length
+        - valid_ratio
+  loader:
+    shuffle: false
+    drop_last: false
+    batch_size_per_card: 72
+    num_workers: 4
