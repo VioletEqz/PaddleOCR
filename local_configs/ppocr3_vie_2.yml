@@ -40,7 +40,7 @@ Architecture:
   Transform:
   Backbone:
     name: MobileNetV1Enhance
-    scale: 0.75
+    scale: 0.5
     last_conv_stride: [1, 2]
     last_pool_type: avg
     last_pool_kernel_size: [2, 2]
@@ -115,7 +115,7 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 66
+    batch_size_per_card: 72
     drop_last: true
     num_workers: 4
 
@@ -140,5 +140,5 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 66
+    batch_size_per_card: 72
     num_workers: 4
