@@ -6,7 +6,7 @@ Global:
   print_batch_step: 10
   save_model_dir: ./output/ppocr3
   save_epoch_step: 1
-  eval_batch_step: [0, 600]
+  eval_batch_step: [0, 1]
   cal_metric_during_train: true
   pretrained_model: 
   checkpoints: 
@@ -27,7 +27,7 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Cosine
-    learning_rate: 0.0003
+    learning_rate: 0.00035
     warmup_epoch: 2
   regularizer:
     name: L2
