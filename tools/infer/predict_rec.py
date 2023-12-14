@@ -670,8 +670,8 @@ def main(args):
             with open(args.save_log_path, "a+") as fout:
                 fout.write(valid_image_file_list[ino].rsplit('/',1)[-1] + "\t" + rec_res[ino][0] + "\t" + rec_res[ino][1] +
                            "\n")
-        logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
-                                               rec_res[ino]))
+        # logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
+        #                                        rec_res[ino]))
     if args.benchmark:
         text_recognizer.autolog.report()
 
