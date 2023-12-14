@@ -668,7 +668,7 @@ def main(args):
     for ino in range(len(img_list)):
         if args.save_log_path is not None:
             with open(args.save_log_path, "a+") as fout:
-                fout.write(valid_image_file_list[ino].rsplit('/',1)[-1] + "\t" + rec_res[ino][0] +
+                fout.write(valid_image_file_list[ino].rsplit('/',1)[-1] + "\t" + rec_res[ino][0] + "\t" + rec_res[ino][1] +
                            "\n")
         logger.info("Predicts of {}:{}".format(valid_image_file_list[ino],
                                                rec_res[ino]))
