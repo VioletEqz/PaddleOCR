@@ -93,7 +93,7 @@ Train:
     - RecConAug:
         prob: 0.0
         ext_data_num: 2
-        image_shape: [48, 512]
+        image_shape: [48, 480]
         max_text_length: *max_text_length
     - RecAug:
         tia_prob: 0.05
