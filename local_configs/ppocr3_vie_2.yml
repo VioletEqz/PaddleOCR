@@ -5,16 +5,16 @@ Global:
   log_smooth_window: 3
   print_batch_step: 10
   save_model_dir: ./output/ppocr3
-  save_epoch_step: 1
-  eval_batch_step: [0, 600]
+  save_epoch_step: 2
+  eval_batch_step: [0, 200]
   cal_metric_during_train: true
-  pretrained_model: 
+  pretrained_model:
   checkpoints: 
   save_inference_dir:
   use_visualdl: false
   infer_img: 
   character_dict_path: dict.txt
-  max_text_length: &max_text_length 50
+  max_text_length: &max_text_length 30
   infer_mode: false
   use_space_char: true
   distributed: true
@@ -27,8 +27,8 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Cosine
-    learning_rate: 0.0003
-    warmup_epoch: 2
+    learning_rate: 0.0005
+    warmup_epoch: 1
   regularizer:
     name: L2
     factor: 5.0e-05
@@ -40,7 +40,7 @@ Architecture:
   Transform:
   Backbone:
     name: MobileNetV1Enhance
-    scale: 0.6
+    scale: 0.5
     last_conv_stride: [1, 2]
     last_pool_type: avg
     last_pool_kernel_size: [2, 2]
@@ -64,7 +64,7 @@ Loss:
   name: MultiLoss
   loss_config_list:
     - CTCLoss:
-    #   use_focal_loss: true
+        use_focal_loss: true
         weight: 1.0
     # - CenterLoss:
     #     weight: 0.05
@@ -84,25 +84,25 @@ Metric:
 Train:
   dataset:
     name: LMDBDataSet
-    data_dir: /kaggle/input/text-gen-vi-combined-v4/
+    data_dir: /kaggle/input/text-gen-vi-combined-v3/
     ext_op_transform_idx: 1
     transforms:
     - DecodeImage:
         img_mode: BGR
         channel_first: false
     - RecConAug:
-        prob: 0.5
+        prob: 0.0
         ext_data_num: 2
-        image_shape: [48, 480]
+        image_shape: [48, 512]
         max_text_length: *max_text_length
     - RecAug:
-        tia_prob: 0.0
-        crop_prob: 0.0
-        reverse_prob: 0.0
-        noise_prob: 0.4
-        jitter_prob: 0.4
+        tia_prob: 0.05
+        crop_prob: 0.05
+        reverse_prob: 0.1
+        noise_prob: 0.5
+        jitter_prob: 0.5
         blur_prob: 0.0
-        hsv_aug_prob: 0.4
+        hsv_aug_prob: 0.5
     - MultiLabelEncode:
     - RecResizeImg:
         image_shape: [3, 48, 480]
@@ -115,14 +115,14 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 77
+    batch_size_per_card: 78
     drop_last: true
     num_workers: 4
 
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /kaggle/input/testset-real-vie-private/real_name_lmdb/
+    data_dir: /kaggle/input/test-set-vie-name-corrected/
     transforms:
     - DecodeImage:
         img_mode: BGR
@@ -140,5 +140,5 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 77
+    batch_size_per_card: 78
     num_workers: 4
