@@ -27,12 +27,12 @@ Optimizer:
   beta2: 0.999
   lr:
     name: Piecewise
-    decay_epochs : [700]
-    values : [0.0005, 0.00005]
-    warmup_epoch: 5
+    decay_epochs : [2]
+    values : [0.00025, 0.00005]
+    warmup_epoch: 1
   regularizer:
     name: L2
-    factor: 3.0e-05
+    factor: 5.0e-05
 
 
 Architecture:
@@ -183,7 +183,7 @@ Train:
         - valid_ratio
   loader:
     shuffle: true
-    batch_size_per_card: 52
+    batch_size_per_card: 50
     drop_last: true
     num_workers: 4
 
@@ -208,5 +208,5 @@ Eval:
   loader:
     shuffle: false
     drop_last: false
-    batch_size_per_card: 52
+    batch_size_per_card: 50
     num_workers: 4
