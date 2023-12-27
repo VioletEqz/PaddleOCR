@@ -4,7 +4,7 @@ Global:
   epoch_num: 20
   log_smooth_window: 2
   print_batch_step: 10
-  save_model_dir: ./output/ppocr3
+  save_model_dir: ./output/ppocr3_id_distil
   save_epoch_step: 2
   eval_batch_step: [0, 200]
   cal_metric_during_train: true
@@ -159,7 +159,7 @@ Train:
         img_mode: BGR
         channel_first: false
     - RecConAug:
-        prob: 0.25
+        prob: 0.2
         ext_data_num: 2
         image_shape: [48, 480]
         max_text_length: *max_text_length
@@ -190,7 +190,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /kaggle/input/real-id-testset/id_testset/
+    data_dir: /kaggle/input/id-500-testset/
     transforms:
     - DecodeImage:
         img_mode: BGR
