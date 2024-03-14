@@ -122,7 +122,7 @@ Train:
 Eval:
   dataset:
     name: LMDBDataSet
-    data_dir: /kaggle/input/gen-2m-receipt-id500/
+    data_dir: /kaggle/input/test-500-1k/gogo_esign_1k_500/
     transforms:
     - DecodeImage:
         img_mode: BGR
